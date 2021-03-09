@@ -5,7 +5,6 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { body, query, validationResult } from 'express-validator'
 import fs from 'fs'
-import { userInfo } from 'node:os'
 
 const SECRET_KEY = process.env.SECRET_KEY as string
 const app = express()
@@ -166,7 +165,7 @@ app.post('/withdraw',
     const db = readDbFile()
     const user = db.users.find(user => user.username === username)
     const balanceOf = Number(user?.balance)
-    let BalUpdate = withDraw+balanceOf
+    let BalUpdate = balanceOf-withDraw
 
     if(token){
       res.status(200).json({
@@ -187,6 +186,7 @@ app.post('/withdraw',
 app.delete('/reset', (req, res) => {
 
   //code your database reset here
+  
   
   return res.status(200).json({
     message: 'Reset database successfully'
